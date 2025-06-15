@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Activity, Waves, Globe, MapPin, MessageCircle, X } from 'lucide-react';
+import { Home, Activity, Waves, Globe, MapPin, MessageCircle, X, Sparkles, Wind, Flame, Flower, Droplets, Bell } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface SidebarProps {
@@ -16,6 +16,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     { name: 'Global Healing Rituals', path: '/global-rituals', icon: <Globe size={20} /> },
     { name: 'Recovery Resonance Map', path: '/resonance-map', icon: <MapPin size={20} /> },
     { name: 'Wellness Oracle', path: '/wellness-oracle', icon: <MessageCircle size={20} /> },
+    { name: 'Vitality Aurora Veil', path: '/vitality-aurora', icon: <Sparkles size={20} /> },
+    { name: 'Eco-Sync Wind Sculpture', path: '/eco-sync-wind', icon: <Wind size={20} /> },
+    { name: 'Global Healing Ember', path: '/global-healing-ember', icon: <Flame size={20} /> },
+    { name: 'Resilience Petal Vortex', path: '/resilience-petal-vortex', icon: <Flower size={20} /> },
+    { name: 'Eco-Rhythm Cascade', path: '/eco-rhythm-cascade', icon: <Droplets size={20} /> },
+    { name: 'Harmony Pulse Chime', path: '/harmony-pulse-chime', icon: <Bell size={20} /> },
   ];
 
   return (

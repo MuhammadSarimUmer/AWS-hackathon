@@ -7,6 +7,12 @@ import HealingWave from './pages/HealingWave';
 import GlobalHealingRituals from './pages/GlobalHealingRituals';
 import RecoveryResonanceMap from './pages/RecoveryResonanceMap';
 import GlobalWellnessOracle from './pages/GlobalWellnessOracle';
+import VitalityAuroraVeil from './pages/VitalityAuroraVeil';
+import EcoSyncWindSculpture from './pages/EcoSyncWindSculpture';
+import GlobalHealingEmber from './pages/GlobalHealingEmber';
+import ResiliencePetalVortex from './pages/ResiliencePetalVortex';
+import EcoRhythmCascade from './pages/EcoRhythmCascade';
+import HarmonyPulseChime from './pages/HarmonyPulseChime';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -19,6 +25,12 @@ function App() {
         <Route path="/global-rituals" element={<GlobalHealingRituals />} />
         <Route path="/resonance-map" element={<RecoveryResonanceMap />} />
         <Route path="/wellness-oracle" element={<GlobalWellnessOracle />} />
+        <Route path="/vitality-aurora" element={<VitalityAuroraVeil />} />
+        <Route path="/eco-sync-wind" element={<EcoSyncWindSculpture />} />
+        <Route path="/global-healing-ember" element={<GlobalHealingEmber />} />
+        <Route path="/resilience-petal-vortex" element={<ResiliencePetalVortex />} />
+        <Route path="/eco-rhythm-cascade" element={<EcoRhythmCascade />} />
+        <Route path="/harmony-pulse-chime" element={<HarmonyPulseChime />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

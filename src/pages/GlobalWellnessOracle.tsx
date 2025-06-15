@@ -1,11 +1,11 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useData } from '../context/DataContext';
 import { motion } from 'framer-motion';
-import { MessageCircle, Send, AlertCircle, Leaf, Brain, Activity, Moon } from 'lucide-react';
+import { MessageCircle, Send, AlertCircle, Leaf, Brain, Activity, Moon, Zap, Bookmark, BookmarkCheck, Users } from 'lucide-react';
 
 const GlobalWellnessOracle: React.FC = () => {
   const { patientData, environmentalData, communityData, isLoading } = useData();
-  const [messages, setMessages] = useState<Array<{text: string; sender: 'user' | 'oracle'; timestamp: Date}>>([
+  const [messages, setMessages] = useState<Array<{text: string; sender: 'user' | 'oracle'; timestamp: Date; isSaved?: boolean}>>([
     {
       text: "Hello! I'm your Wellness Oracle, here to provide personalized advice based on your health data, community insights, and environmental conditions. How can I assist you today?",
       sender: 'oracle',
@@ -14,6 +14,7 @@ const GlobalWellnessOracle: React.FC = () => {
   ]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [savedInsights, setSavedInsights] = useState<string[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   
   // Suggested questions
@@ -22,7 +23,9 @@ const GlobalWellnessOracle: React.FC = () => {
     "What environmental factors affect my recovery most?",
     "Which community rituals would benefit me?",
     "How do my vitals correlate with air quality?",
-    "What's the best time for my healing practices?"
+    "What's the best time for my healing practices?",
+    "Give me a quick health summary",
+    "What should I focus on today?"
   ];
   
   const scrollToBottom = () => {
@@ -33,8 +36,34 @@ const GlobalWellnessOracle: React.FC = () => {
     scrollToBottom();
   }, [messages]);
   
+  const generateQuickInsights = () => {
+    const patient = patientData[0];
+    const env = environmentalData[0];
+    
+    return `🔍 **Quick Health Insights**
+
+📊 **Current Status:**
+• Recovery Progress: ${patient?.recoveryMetrics.recoveryProgress}% (${patient?.recoveryMetrics.recoveryProgress > 70 ? 'Excellent' : patient?.recoveryMetrics.recoveryProgress > 50 ? 'Good' : 'Needs Attention'})
+• Energy Level: ${patient?.recoveryMetrics.energyLevel}/100
+• Pain Level: ${patient?.recoveryMetrics.painLevel}/10
+
+🌿 **Environmental Factors:**
+• Air Quality: ${env?.measurements[0].airQuality.aqi} AQI (${env?.measurements[0].airQuality.aqi < 50 ? 'Good' : env?.measurements[0].airQuality.aqi < 100 ? 'Moderate' : 'Poor'})
+• Natural Light: ${patient?.environmentalExposure.naturalLightHours}h/day
+• Temperature: ${env?.measurements[0].temperature}°C
+
+💡 **Today's Focus:**
+${patient?.recoveryMetrics.painLevel > 5 ? '• Prioritize pain management activities' : ''}
+${patient?.recoveryMetrics.energyLevel < 60 ? '• Focus on energy-boosting practices' : ''}
+${env?.measurements[0].airQuality.aqi > 100 ? '• Use air purifier and limit outdoor activities' : ''}
+• Join community support activities for mental wellness
+
+🎯 **Recommended Action:**
+${patient?.recoveryMetrics.recoveryProgress < 50 ? 'Schedule a consultation with your healthcare provider' : 'Continue with current recovery plan and monitor progress'}`;
+  };
+  
   const generateResponse = (query: string) => {
-    // Simplified mock AI response generation
+    // Enhanced AI response generation with more context
     const responseOptions = [
       {
         trigger: 'sleep',
@@ -42,7 +71,9 @@ const GlobalWellnessOracle: React.FC = () => {
 1. Reducing blue light exposure 2 hours before bed
 2. Creating a ritual with the Forest Ambience sound environment
 3. Ensuring your bedroom has proper air circulation (current indoor air quality is ${environmentalData[0]?.measurements[0].airQuality.aqi} AQI)
-4. Joining the community evening meditation ritual, which has shown to improve deep sleep by 18% among participants with similar profiles.`
+4. Joining the community evening meditation ritual, which has shown to improve deep sleep by 18% among participants with similar profiles.
+
+💡 **Pro Tip:** Your sleep quality correlates 76% with your recovery progress. Improving sleep by 1 hour could boost recovery by 12%.`
       },
       {
         trigger: 'environmental',
@@ -51,7 +82,9 @@ const GlobalWellnessOracle: React.FC = () => {
 2. Natural Light Exposure: You're currently getting ${patientData[0]?.environmentalExposure.naturalLightHours} hours daily (optimal is 5-6 hours)
 3. Negative Ion Concentration: ${environmentalData[0]?.measurements[0].bioactiveElements.negativeIonDensity} ions/cm³
 
-I recommend increasing your time at the Forest Retreat Center, which has significantly better readings across all metrics. Specifically, spending 30 more minutes there daily could improve your recovery metrics by approximately 12% based on community data patterns.`
+I recommend increasing your time at the Forest Retreat Center, which has significantly better readings across all metrics. Specifically, spending 30 more minutes there daily could improve your recovery metrics by approximately 12% based on community data patterns.
+
+🌱 **Environmental Impact Score:** ${Math.round((100 - environmentalData[0]?.measurements[0].airQuality.aqi) * 0.8)}/100`
       },
       {
         trigger: 'ritual',
@@ -61,7 +94,9 @@ I recommend increasing your time at the Forest Retreat Center, which has signifi
 2. Heart Rhythm Synchronization (Daily at 7:00 AM) - Would support your cardiovascular recovery
 3. Pain Relief Meditation (Daily at 9:00 AM) - Shown to reduce pain levels by 15% among similar patients
 
-The ${communityData[0]?.groupRituals[0].name} has the highest compatibility score (82%) with your current healing needs.`
+The ${communityData[0]?.groupRituals[0].name} has the highest compatibility score (82%) with your current healing needs.
+
+🤝 **Community Connection:** You're part of a network of ${communityData[0]?.activityMetrics.dailyActiveMembers} active members who can provide support and motivation.`
       },
       {
         trigger: 'vitals',
@@ -71,7 +106,12 @@ The ${communityData[0]?.groupRituals[0].name} has the highest compatibility scor
 2. Respiratory rate decreases by approximately 1-2 breaths per minute when air quality index improves by 10 points
 3. Your inflammation markers show the strongest correlation with air pollutant levels (76% correlation coefficient)
 
-The most pronounced effect occurs between 2-4 hours after air quality changes. I recommend using the air purifier in adaptive mode during periods of poor air quality (AQI > 50).`
+The most pronounced effect occurs between 2-4 hours after air quality changes. I recommend using the air purifier in adaptive mode during periods of poor air quality (AQI > 50).
+
+📈 **Current Vital Trends:**
+• HRV: ${patientData[0]?.vitals[0].hrvScore} (${patientData[0]?.vitals[0].hrvScore > 50 ? 'Good' : 'Needs improvement'})
+• Heart Rate: ${patientData[0]?.vitals[0].heartRate} bpm
+• Oxygen Saturation: ${patientData[0]?.vitals[0].oxygenSaturation}%`
       },
       {
         trigger: 'time',
@@ -82,7 +122,29 @@ Optimal times for your healing practices are:
 - Mental wellness activities: 3:00-5:00 PM (when your cognitive metrics are highest)
 - Meditation: 7:30-8:30 PM (when your HRV is most responsive)
 
-Your body shows particular receptivity to healing interventions on Tuesday and Saturday mornings, based on pattern analysis of your recovery metrics.`
+Your body shows particular receptivity to healing interventions on Tuesday and Saturday mornings, based on pattern analysis of your recovery metrics.
+
+⏰ **Next Optimal Session:** ${new Date().getDay() === 2 || new Date().getDay() === 6 ? 'Today is optimal for healing practices!' : 'Next optimal day: ' + (new Date().getDay() === 1 ? 'Tuesday' : 'Saturday')}`
+      },
+      {
+        trigger: 'summary',
+        response: generateQuickInsights()
+      },
+      {
+        trigger: 'focus',
+        response: `🎯 **Today's Focus Areas**
+
+Based on your current metrics, here's what you should prioritize today:
+
+${patientData[0]?.recoveryMetrics.painLevel > 5 ? '🔥 **Pain Management Priority**\n• Use the pain relief meditation at 9:00 AM\n• Apply heat therapy for 20 minutes\n• Join the community pain support group\n\n' : ''}
+${patientData[0]?.recoveryMetrics.energyLevel < 60 ? '⚡ **Energy Boost Focus**\n• Take a 15-minute walk in natural light\n• Practice the energy restoration ritual\n• Consume energy-supporting nutrition\n\n' : ''}
+${patientData[0]?.recoveryMetrics.mentalWellnessScore < 75 ? '🧠 **Mental Wellness**\n• Join the gratitude circle at 6:00 PM\n• Practice 10 minutes of mindfulness\n• Connect with 2 community members\n\n' : ''}
+🌿 **Environmental Optimization:**
+• Spend 30 minutes at the Forest Retreat Center
+• Use air purifier during peak pollution hours
+• Ensure proper ventilation in your space
+
+💪 **Recovery Milestone:** You're ${100 - patientData[0]?.recoveryMetrics.recoveryProgress}% away from your next recovery milestone!`
       },
       {
         trigger: 'default',
@@ -92,7 +154,7 @@ Your body shows particular receptivity to healing interventions on Tuesday and S
 2. Your environmental exposure could be optimized - particularly natural light (currently ${patientData[0]?.environmentalExposure.naturalLightHours} hours daily)
 3. Community support shows strong correlation with your mental wellness scores
 
-Would you like specific recommendations about sleep quality, environmental factors, community rituals, vital correlations, or optimal timing for healing practices?`
+Would you like specific recommendations about sleep quality, environmental factors, community rituals, vital correlations, optimal timing for healing practices, or a quick health summary?`
       }
     ];
     
@@ -140,6 +202,33 @@ Would you like specific recommendations about sleep quality, environmental facto
       handleSendMessage();
     }, 100);
   };
+
+  const handleQuickInsights = () => {
+    const insights = generateQuickInsights();
+    const oracleMessage = {
+      text: insights,
+      sender: 'oracle' as const,
+      timestamp: new Date()
+    };
+    
+    setMessages(prev => [...prev, oracleMessage]);
+  };
+
+  const toggleSaveInsight = (messageIndex: number) => {
+    const message = messages[messageIndex];
+    if (message.sender === 'oracle') {
+      if (savedInsights.includes(message.text)) {
+        setSavedInsights(prev => prev.filter(text => text !== message.text));
+      } else {
+        setSavedInsights(prev => [...prev, message.text]);
+      }
+      
+      // Update the message's saved status
+      setMessages(prev => prev.map((msg, idx) => 
+        idx === messageIndex ? { ...msg, isSaved: !msg.isSaved } : msg
+      ));
+    }
+  };
   
   if (isLoading) {
     return (
@@ -165,6 +254,15 @@ Would you like specific recommendations about sleep quality, environmental facto
           <h1 className="text-2xl font-bold text-gray-900">Global Wellness Oracle</h1>
           <p className="text-gray-600">AI-powered insights from your health, community, and environmental data</p>
         </div>
+        <motion.button
+          onClick={handleQuickInsights}
+          className="bg-gradient-to-r from-primary-500 to-accent-500 text-white px-4 py-2 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2"
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+        >
+          <Zap size={20} />
+          <span>Quick Insights</span>
+        </motion.button>
       </motion.div>
 
       {/* Oracle Interface */}
@@ -193,16 +291,33 @@ Would you like specific recommendations about sleep quality, environmental facto
               className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
             >
               <div 
-                className={`max-w-[80%] p-4 rounded-lg ${
+                className={`max-w-[80%] p-4 rounded-lg relative ${
                   message.sender === 'user' 
                     ? 'bg-primary-500 text-white rounded-tr-none'
                     : 'bg-gray-100 text-gray-800 rounded-tl-none'
                 }`}
               >
                 <p className="whitespace-pre-line">{message.text}</p>
-                <p className={`text-xs mt-1 ${message.sender === 'user' ? 'text-primary-100' : 'text-gray-500'}`}>
-                  {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </p>
+                <div className={`flex items-center justify-between mt-2 ${
+                  message.sender === 'user' ? 'text-primary-100' : 'text-gray-500'
+                }`}>
+                  <p className="text-xs">
+                    {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </p>
+                  {message.sender === 'oracle' && (
+                    <button
+                      onClick={() => toggleSaveInsight(index)}
+                      className={`ml-2 p-1 rounded hover:bg-opacity-20 ${
+                        message.isSaved 
+                          ? 'text-yellow-500 hover:bg-yellow-500' 
+                          : 'hover:bg-gray-500'
+                      }`}
+                      title={message.isSaved ? 'Remove from saved' : 'Save insight'}
+                    >
+                      {message.isSaved ? <BookmarkCheck size={16} /> : <Bookmark size={16} />}
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           ))}

@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
+import FloatingActionButton from '../dashboard/FloatingActionButton';
+import AuroraFloatingButton from '../dashboard/AuroraFloatingButton';
+import WindSculptureFloatingButton from '../dashboard/WindSculptureFloatingButton';
+import HealingEmberFloatingButton from '../dashboard/HealingEmberFloatingButton';
+import PetalVortexFloatingButton from '../dashboard/PetalVortexFloatingButton';
 import { motion } from 'framer-motion';
 
 const Layout: React.FC = () => {
@@ -36,6 +41,13 @@ const Layout: React.FC = () => {
           <Outlet />
         </motion.main>
       </div>
+
+      {/* Floating Action Buttons */}
+      <FloatingActionButton />
+      <AuroraFloatingButton />
+      <WindSculptureFloatingButton />
+      <HealingEmberFloatingButton />
+      <PetalVortexFloatingButton />
     </div>
   );
 };

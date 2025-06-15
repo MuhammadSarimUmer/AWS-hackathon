@@ -1,21 +1,28 @@
 import React from 'react';
-import { Activity, Heart, Users, Leaf, Wind, Brain } from 'lucide-react';
+import { Activity, Heart, Users, Leaf, Wind, Brain, MessageCircle, Sparkles, Flame, MapPin, Flower, Droplets, Bell } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useData } from '../context/DataContext';
+import { useNavigate } from 'react-router-dom';
 import StatCard from '../components/dashboard/StatCard';
 import ProgressCard from '../components/dashboard/ProgressCard';
 import AreaChart from '../components/visualizations/AreaChart';
 import LineChart from '../components/visualizations/LineChart';
 import RadarChart from '../components/visualizations/RadarChart';
+import WindSculptureWidget from '../components/dashboard/WindSculptureWidget';
+import HealingEmberWidget from '../components/dashboard/HealingEmberWidget';
+import PetalVortexWidget from '../components/dashboard/PetalVortexWidget';
+import EcoRhythmCascadeWidget from '../components/dashboard/EcoRhythmCascadeWidget';
+import HarmonyPulseChimeWidget from '../components/dashboard/HarmonyPulseChimeWidget';
 
 const Dashboard: React.FC = () => {
   const { patientData, environmentalData, communityData, isLoading } = useData();
+  const navigate = useNavigate();
 
   // Extract the first patient for demo
   const patient = patientData[0];
   
   // Prepare vital signs data for the chart
-  const vitalSignsData = patient?.vitals.map(v => ({
+  const vitalSignsData = patient?.vitals.map((v: any) => ({
     time: new Date(v.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     heartRate: v.heartRate,
     hrvScore: v.hrvScore,
@@ -23,7 +30,7 @@ const Dashboard: React.FC = () => {
   })) || [];
 
   // Environment data for the first location
-  const environmentMetrics = environmentalData[0]?.measurements.map(m => ({
+  const environmentMetrics = environmentalData[0]?.measurements.map((m: any) => ({
     time: new Date(m.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
     airQuality: m.airQuality.aqi,
     temperature: m.temperature,
@@ -50,6 +57,34 @@ const Dashboard: React.FC = () => {
     }
   };
 
+  const handleWellnessOracleClick = () => {
+    navigate('/wellness-oracle');
+  };
+
+  const handleVitalityAuroraClick = () => {
+    navigate('/vitality-aurora');
+  };
+
+  const handleEcoSyncWindClick = () => {
+    navigate('/eco-sync-wind');
+  };
+
+  const handleGlobalHealingEmberClick = () => {
+    navigate('/global-healing-ember');
+  };
+
+  const handleResiliencePetalVortexClick = () => {
+    navigate('/resilience-petal-vortex');
+  };
+
+  const handleEcoRhythmCascadeClick = () => {
+    navigate('/eco-rhythm-cascade');
+  };
+
+  const handleHarmonyPulseChimeClick = () => {
+    navigate('/harmony-pulse-chime');
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -70,8 +105,75 @@ const Dashboard: React.FC = () => {
       className="space-y-6"
     >
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-900">SoulSync Dashboard</h1>
-        <p className="text-sm text-gray-500">Syncing health with environment and community</p>
+        <div>
+          <h1 className="text-2xl font-bold text-gray-900">SoulSync Dashboard</h1>
+          <p className="text-sm text-gray-500">Syncing health with environment and community</p>
+        </div>
+        <div className="flex space-x-2">
+          <motion.button
+            onClick={handleWellnessOracleClick}
+            className="bg-gradient-to-r from-primary-500 to-accent-500 text-white px-4 py-2 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <MessageCircle size={20} />
+            <span>Ask Oracle</span>
+          </motion.button>
+          <motion.button
+            onClick={handleVitalityAuroraClick}
+            className="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-4 py-2 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Sparkles size={20} />
+            <span>View Aurora</span>
+          </motion.button>
+          <motion.button
+            onClick={handleEcoSyncWindClick}
+            className="bg-gradient-to-r from-green-500 to-teal-500 text-white px-4 py-2 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Wind size={20} />
+            <span>Wind Sculpture</span>
+          </motion.button>
+          <motion.button
+            onClick={handleGlobalHealingEmberClick}
+            className="bg-gradient-to-r from-orange-500 to-red-500 text-white px-4 py-2 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Flame size={20} />
+            <span>Healing Ember</span>
+          </motion.button>
+          <motion.button
+            onClick={handleResiliencePetalVortexClick}
+            className="bg-gradient-to-r from-pink-500 to-purple-500 text-white px-4 py-2 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Flower size={20} />
+            <span>Petal Vortex</span>
+          </motion.button>
+          <motion.button
+            onClick={handleEcoRhythmCascadeClick}
+            className="bg-gradient-to-r from-cyan-500 to-blue-500 text-white px-4 py-2 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Droplets size={20} />
+            <span>Eco Cascade</span>
+          </motion.button>
+          <motion.button
+            onClick={handleHarmonyPulseChimeClick}
+            className="bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-4 py-2 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Bell size={20} />
+            <span>Pulse Chime</span>
+          </motion.button>
+        </div>
       </div>
 
       {/* Quick Stats */}
@@ -164,8 +266,15 @@ const Dashboard: React.FC = () => {
         />
       </div>
 
+      {/* Interactive Widgets */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
+        <WindSculptureWidget />
+        <HealingEmberWidget />
+        <PetalVortexWidget />
+      </div>
+
       {/* Feature Highlights */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
         <motion.div 
           className="bg-white rounded-xl shadow-neumorph-sm p-5 border-l-4 border-primary-500"
           whileHover={{ y: -5, transition: { duration: 0.2 } }}
@@ -200,6 +309,105 @@ const Dashboard: React.FC = () => {
           </h3>
           <p className="mt-2 text-sm text-gray-600">
             Connect with global community through AI-designed, culturally-tailored healing practices.
+          </p>
+        </motion.div>
+        <motion.div 
+          className="bg-white rounded-xl shadow-neumorph-sm p-5 border-l-4 border-indigo-500 cursor-pointer"
+          whileHover={{ y: -5, transition: { duration: 0.2 } }}
+          onClick={handleWellnessOracleClick}
+        >
+          <h3 className="flex items-center text-lg font-medium text-gray-800">
+            <MessageCircle className="mr-2 text-indigo-500" size={20} />
+            Wellness Oracle
+          </h3>
+          <p className="mt-2 text-sm text-gray-600">
+            Get personalized AI-powered insights about your health, environment, and community.
+          </p>
+        </motion.div>
+      </div>
+
+      {/* Additional Feature Highlights */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+        <motion.div 
+          className="bg-white rounded-xl shadow-neumorph-sm p-5 border-l-4 border-purple-500 cursor-pointer"
+          whileHover={{ y: -5, transition: { duration: 0.2 } }}
+          onClick={handleVitalityAuroraClick}
+        >
+          <h3 className="flex items-center text-lg font-medium text-gray-800">
+            <Sparkles className="mr-2 text-purple-500" size={20} />
+            Vitality Aurora Veil
+          </h3>
+          <p className="mt-2 text-sm text-gray-600">
+            Dynamic AR aurora projecting your recovery journey with community and environmental harmony.
+          </p>
+        </motion.div>
+        <motion.div 
+          className="bg-white rounded-xl shadow-neumorph-sm p-5 border-l-4 border-green-500 cursor-pointer"
+          whileHover={{ y: -5, transition: { duration: 0.2 } }}
+          onClick={handleEcoSyncWindClick}
+        >
+          <h3 className="flex items-center text-lg font-medium text-gray-800">
+            <Wind className="mr-2 text-green-500" size={20} />
+            Eco-Sync Wind Sculpture
+          </h3>
+          <p className="mt-2 text-sm text-gray-600">
+            Kinetic wind-driven elements synchronized with vitals and eco-conditions in public spaces.
+          </p>
+        </motion.div>
+        <motion.div 
+          className="bg-white rounded-xl shadow-neumorph-sm p-5 border-l-4 border-orange-500 cursor-pointer"
+          whileHover={{ y: -5, transition: { duration: 0.2 } }}
+          onClick={handleGlobalHealingEmberClick}
+        >
+          <h3 className="flex items-center text-lg font-medium text-gray-800">
+            <Flame className="mr-2 text-orange-500" size={20} />
+            Global Healing Ember
+          </h3>
+          <p className="mt-2 text-sm text-gray-600">
+            Pulsating virtual ember visualizing recovery and eco-data with viral sharing impact.
+          </p>
+        </motion.div>
+        <motion.div 
+          className="bg-white rounded-xl shadow-neumorph-sm p-5 border-l-4 border-pink-500 cursor-pointer"
+          whileHover={{ y: -5, transition: { duration: 0.2 } }}
+          onClick={handleResiliencePetalVortexClick}
+        >
+          <h3 className="flex items-center text-lg font-medium text-gray-800">
+            <Flower className="mr-2 text-pink-500" size={20} />
+            Resilience Petal Vortex
+          </h3>
+          <p className="mt-2 text-sm text-gray-600">
+            Swirling AR petal storm rendering recovery with community action patterns and dynamic beauty.
+          </p>
+        </motion.div>
+      </div>
+
+      {/* Third Row Feature Highlights */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mt-4">
+        <motion.div 
+          className="bg-white rounded-xl shadow-neumorph-sm p-5 border-l-4 border-cyan-500 cursor-pointer"
+          whileHover={{ y: -5, transition: { duration: 0.2 } }}
+          onClick={handleEcoRhythmCascadeClick}
+        >
+          <h3 className="flex items-center text-lg font-medium text-gray-800">
+            <Droplets className="mr-2 text-cyan-500" size={20} />
+            Eco-Rhythm Cascade
+          </h3>
+          <p className="mt-2 text-sm text-gray-600">
+            AR waterfalls syncing patient breathing with environmental rhythms for calming, shareable experiences.
+          </p>
+        </motion.div>
+        <motion.div 
+          className="bg-white rounded-xl shadow-neumorph-sm p-5 border-l-4 border-indigo-500 cursor-pointer"
+          whileHover={{ y: -5, transition: { duration: 0.2 } }}
+          onClick={handleHarmonyPulseChimeClick}
+        >
+          <h3 className="flex items-center text-lg font-medium text-gray-800">
+            <Bell className="mr-2 text-indigo-500" size={20} />
+            Harmony Pulse Chime
+          </h3>
+          <p className="mt-2 text-sm text-gray-600">
+            Therapeutic bell sounds tied to vitals and eco-data, creating serene spaces via edge devices.
           </p>
         </motion.div>
       </div>
