@@ -1,5 +1,5 @@
 import React from 'react';
-import { Activity, Heart, Users, Leaf, Wind, Brain, MessageCircle, Sparkles, Flame, MapPin, Flower, Droplets, Bell } from 'lucide-react';
+import { Activity, Heart, Users, Leaf, Wind, Brain, MessageCircle, Sparkles, Flame, MapPin, Flower, Droplets, Bell, Globe, Grid, Share2, Waves, Layers } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { useData } from '../context/DataContext';
 import { useNavigate } from 'react-router-dom';
@@ -83,6 +83,30 @@ const Dashboard: React.FC = () => {
 
   const handleHarmonyPulseChimeClick = () => {
     navigate('/harmony-pulse-chime');
+  };
+
+  const handleCommunityGlowSphereClick = () => {
+    navigate('/community-glow-sphere');
+  };
+
+  const handleVitalitySkyMosaicClick = () => {
+    navigate('/vitality-sky-mosaic');
+  };
+
+  const handleGlobalWellnessWeaveClick = () => {
+    navigate('/global-wellness-weave');
+  };
+
+  const handleResilienceRippleJetClick = () => {
+    navigate('/resilience-ripple-jet');
+  };
+
+  const handleEcoVitalityPrismClick = () => {
+    navigate('/eco-vitality-prism');
+  };
+
+  const handleHealingDanceSphereClick = () => {
+    navigate('/healing-dance-sphere');
   };
 
   if (isLoading) {
@@ -172,6 +196,60 @@ const Dashboard: React.FC = () => {
           >
             <Bell size={20} />
             <span>Pulse Chime</span>
+          </motion.button>
+          <motion.button
+            onClick={handleCommunityGlowSphereClick}
+            className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Globe size={20} />
+            <span>Glow Sphere</span>
+          </motion.button>
+          <motion.button
+            onClick={handleVitalitySkyMosaicClick}
+            className="bg-gradient-to-r from-sky-400 to-blue-500 text-white px-4 py-2 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Grid size={20} />
+            <span>Sky Mosaic</span>
+          </motion.button>
+          <motion.button
+            onClick={handleGlobalWellnessWeaveClick}
+            className="bg-gradient-to-r from-teal-400 to-cyan-500 text-white px-4 py-2 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Share2 size={20} />
+            <span>Wellness Weave</span>
+          </motion.button>
+          <motion.button
+            onClick={handleResilienceRippleJetClick}
+            className="bg-gradient-to-r from-blue-400 to-cyan-500 text-white px-4 py-2 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Waves size={20} />
+            <span>Ripple Jet</span>
+          </motion.button>
+          <motion.button
+            onClick={handleEcoVitalityPrismClick}
+            className="bg-gradient-to-r from-purple-500 to-green-400 text-white px-4 py-2 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Layers size={20} />
+            <span>Vitality Prism</span>
+          </motion.button>
+          <motion.button
+            onClick={handleHealingDanceSphereClick}
+            className="bg-gradient-to-r from-pink-500 to-orange-400 text-white px-4 py-2 rounded-lg font-medium shadow-lg hover:shadow-xl transition-all duration-300 flex items-center space-x-2"
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Globe size={20} />
+            <span>Dance Sphere</span>
           </motion.button>
         </div>
       </div>
@@ -383,7 +461,7 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Third Row Feature Highlights */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 mt-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
         <motion.div 
           className="bg-white rounded-xl shadow-neumorph-sm p-5 border-l-4 border-cyan-500 cursor-pointer"
           whileHover={{ y: -5, transition: { duration: 0.2 } }}
@@ -408,6 +486,19 @@ const Dashboard: React.FC = () => {
           </h3>
           <p className="mt-2 text-sm text-gray-600">
             Therapeutic bell sounds tied to vitals and eco-data, creating serene spaces via edge devices.
+          </p>
+        </motion.div>
+        <motion.div 
+          className="bg-white rounded-xl shadow-neumorph-sm p-5 border-l-4 border-yellow-500 cursor-pointer"
+          whileHover={{ y: -5, transition: { duration: 0.2 } }}
+          onClick={handleCommunityGlowSphereClick}
+        >
+          <h3 className="flex items-center text-lg font-medium text-gray-800">
+            <Globe className="mr-2 text-yellow-500" size={20} />
+            Community Glow Sphere
+          </h3>
+          <p className="mt-2 text-sm text-gray-600">
+            Radiant AR sphere pulsing with eco-milestones, fostering connection and community support.
           </p>
         </motion.div>
       </div>

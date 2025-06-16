@@ -7,6 +7,7 @@ import AuroraFloatingButton from '../dashboard/AuroraFloatingButton';
 import WindSculptureFloatingButton from '../dashboard/WindSculptureFloatingButton';
 import HealingEmberFloatingButton from '../dashboard/HealingEmberFloatingButton';
 import PetalVortexFloatingButton from '../dashboard/PetalVortexFloatingButton';
+import CommunityGlowSphereFloatingButton from '../../pages/CommunityGlowSphereFloatingButton';
 import { motion } from 'framer-motion';
 
 const Layout: React.FC = () => {
@@ -48,6 +49,7 @@ const Layout: React.FC = () => {
       <WindSculptureFloatingButton />
       <HealingEmberFloatingButton />
       <PetalVortexFloatingButton />
+      <CommunityGlowSphereFloatingButton />
     </div>
   );
 };

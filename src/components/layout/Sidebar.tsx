@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Activity, Waves, Globe, MapPin, MessageCircle, X, Sparkles, Wind, Flame, Flower, Droplets, Bell } from 'lucide-react';
+import { Home, Activity, Waves, Globe, MapPin, MessageCircle, X, Sparkles, Wind, Flame, Flower, Droplets, Bell, ChevronLeft, ChevronRight, Grid, Share2, Layers } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 interface SidebarProps {
@@ -9,6 +9,8 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
+  const [collapsed, setCollapsed] = useState(false);
+
   const navItems = [
     { name: 'Dashboard', path: '/', icon: <Home size={20} /> },
     { name: 'Bio-Eco Sync Pulse', path: '/bio-eco-sync', icon: <Activity size={20} /> },
@@ -22,6 +24,12 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
     { name: 'Resilience Petal Vortex', path: '/resilience-petal-vortex', icon: <Flower size={20} /> },
     { name: 'Eco-Rhythm Cascade', path: '/eco-rhythm-cascade', icon: <Droplets size={20} /> },
     { name: 'Harmony Pulse Chime', path: '/harmony-pulse-chime', icon: <Bell size={20} /> },
+    { name: 'Community Glow Sphere', path: '/community-glow-sphere', icon: <Globe size={20} className="text-yellow-500" /> },
+    { name: 'Vitality Sky Mosaic', path: '/vitality-sky-mosaic', icon: <Grid size={20} className="text-sky-500" /> },
+    { name: 'Global Wellness Weave', path: '/global-wellness-weave', icon: <Share2 size={20} className="text-teal-500" /> },
+    { name: 'Resilience Ripple Jet', path: '/resilience-ripple-jet', icon: <Waves size={20} className="text-blue-500" /> },
+    { name: 'Eco-Vitality Prism', path: '/eco-vitality-prism', icon: <Layers size={20} className="text-purple-500" /> },
+    { name: 'Healing Dance Sphere', path: '/healing-dance-sphere', icon: <Globe size={20} className="text-pink-500" /> },
   ];
 
   return (
@@ -73,20 +81,26 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
         </nav>
       </motion.div>
 
-      {/* Desktop Sidebar */}
+      {/* Desktop Sidebar - Collapsible */}
       <motion.div 
-        className="hidden lg:flex flex-col w-64 border-r border-gray-200 bg-white overflow-y-auto"
+        className={`hidden lg:flex flex-col h-screen border-r border-gray-200 bg-white overflow-y-auto transition-all duration-300 ${collapsed ? 'w-20' : 'w-64'}`}
         initial={{ x: -20, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.3 }}
       >
-        <div className="flex items-center justify-center h-16 border-b">
+        <div className={`flex items-center justify-between h-16 border-b px-4 ${collapsed ? 'justify-center' : ''}`}>
           <div className="flex items-center space-x-2">
             <div className="h-8 w-8 bg-primary-500 rounded-full flex items-center justify-center text-white">
               <Waves size={18} />
             </div>
-            <span className="text-xl font-semibold text-primary-500">SoulSync</span>
+            {!collapsed && <span className="text-xl font-semibold text-primary-500">SoulSync</span>}
           </div>
+          <button
+            onClick={() => setCollapsed(!collapsed)}
+            className="text-gray-500 hover:text-primary-500 focus:outline-none"
+          >
+            {collapsed ? <ChevronRight size={22} /> : <ChevronLeft size={22} />}
+          </button>
         </div>
         
         <nav className="mt-8">
@@ -96,15 +110,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
                 <NavLink 
                   to={item.path}
                   className={({ isActive }) => 
-                    `flex items-center space-x-2 p-2 rounded-lg transition-colors ${
+                    `flex items-center p-2 rounded-lg transition-colors ${
                       isActive 
                         ? 'bg-primary-50 text-primary-600 font-medium' 
                         : 'text-gray-600 hover:bg-gray-100'
-                    }`
+                    } ${collapsed ? 'justify-center' : 'space-x-2'}`
                   }
                 >
                   {item.icon}
-                  <span>{item.name}</span>
+                  {!collapsed && <span>{item.name}</span>}
                 </NavLink>
               </li>
             ))}
