@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useData } from '../context/DataContext';
 import { Activity, Heart, Zap, Wind, Cloud, Leaf } from 'lucide-react';
 import LineChart from '../components/visualizations/LineChart';
@@ -9,6 +9,7 @@ const BioEcoSyncPulse: React.FC = () => {
   const { patientData, environmentalData, isLoading } = useData();
   const [selectedPatientIndex, setSelectedPatientIndex] = useState(0);
   const [selectedLocationIndex, setSelectedLocationIndex] = useState(0);
+  const [displayedScore, setDisplayedScore] = useState(0);
 
   const selectedPatient = patientData[selectedPatientIndex];
   const selectedLocation = environmentalData[selectedLocationIndex];
@@ -53,6 +54,25 @@ const BioEcoSyncPulse: React.FC = () => {
   };
 
   const syncPulseScore = calculateCorrelation();
+
+  useEffect(() => {
+    let start = 0;
+    if (syncPulseScore > 0) {
+      const step = Math.ceil(syncPulseScore / 30);
+      const interval = setInterval(() => {
+        start += step;
+        if (start >= syncPulseScore) {
+          setDisplayedScore(syncPulseScore);
+          clearInterval(interval);
+        } else {
+          setDisplayedScore(start);
+        }
+      }, 20);
+      return () => clearInterval(interval);
+    } else {
+      setDisplayedScore(0);
+    }
+  }, [syncPulseScore]);
 
   if (isLoading) {
     return (
@@ -108,7 +128,7 @@ const BioEcoSyncPulse: React.FC = () => {
 
       {/* Sync Pulse Score */}
       <motion.div 
-        className="bg-white rounded-xl shadow-neumorph p-6 text-center"
+        className="bg-white border rounded-xl shadow-lg p-6 text-center transition-colors duration-300"
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -120,18 +140,20 @@ const BioEcoSyncPulse: React.FC = () => {
         
         <div className="flex justify-center items-center">
           <div className="relative w-40 h-40">
-            <svg className="w-full h-full" viewBox="0 0 100 100">
-              <circle 
-                cx="50" 
-                cy="50" 
-                r="45" 
-                fill="none" 
-                stroke="#E2E8F0" 
-                strokeWidth="8" 
-              />
-              <circle 
-                cx="50" 
-                cy="50" 
+            <motion.svg
+              className="w-full h-full"
+              viewBox="0 0 100 100"
+              animate={{ filter: [
+                'drop-shadow(0 0 0px #2563eb)',
+                'drop-shadow(0 0 16px #2563eb)',
+                'drop-shadow(0 0 0px #2563eb)'
+              ] }}
+              transition={{ duration: 2, repeat: Infinity }}
+            >
+              <circle cx="50" cy="50" r="45" fill="none" stroke="#E2E8F0" strokeWidth="8" />
+              <circle
+                cx="50"
+                cy="50"
                 r="45"
                 fill="none"
                 stroke="#2A6592"
@@ -141,9 +163,16 @@ const BioEcoSyncPulse: React.FC = () => {
                 transform="rotate(-90 50 50)"
                 className="transition-all duration-1000 ease-out"
               />
-            </svg>
+            </motion.svg>
             <div className="absolute inset-0 flex items-center justify-center flex-col">
-              <span className="text-4xl font-bold text-primary-500">{syncPulseScore}</span>
+              <motion.span
+                className="text-4xl font-bold text-primary-500"
+                initial={{ scale: 0.7, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{ delay: 0.5, duration: 0.5 }}
+              >
+                {displayedScore}
+              </motion.span>
               <span className="text-sm text-gray-500">Sync Score</span>
             </div>
           </div>
@@ -155,7 +184,18 @@ const BioEcoSyncPulse: React.FC = () => {
       </motion.div>
 
       {/* Stats Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <motion.div
+        className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0, y: 40 },
+          visible: {
+            opacity: 1, y: 0,
+            transition: { staggerChildren: 0.15 }
+          }
+        }}
+      >
         <StatCard 
           title="Heart Rate" 
           value={`${selectedPatient?.vitals[selectedPatient.vitals.length - 1].heartRate} bpm`}
@@ -180,7 +220,7 @@ const BioEcoSyncPulse: React.FC = () => {
           icon={<Leaf size={24} />}
           description="Negative ion density (ions/cm³)"
         />
-      </div>
+      </motion.div>
 
       {/* Sync Pulse Chart */}
       <motion.div
@@ -209,7 +249,7 @@ const BioEcoSyncPulse: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.6 }}
       >
-        <div className="bg-white rounded-xl shadow-neumorph-sm p-5">
+        <div className="bg-white border rounded-xl shadow-lg p-5 transition-colors duration-300">
           <h3 className="flex items-center text-lg font-medium text-gray-800 mb-4">
             <Zap className="mr-2 text-yellow-500" size={20} />
             Light Therapy Control
@@ -251,7 +291,7 @@ const BioEcoSyncPulse: React.FC = () => {
           </div>
         </div>
         
-        <div className="bg-white rounded-xl shadow-neumorph-sm p-5">
+        <div className="bg-white border rounded-xl shadow-lg p-5 transition-colors duration-300">
           <h3 className="flex items-center text-lg font-medium text-gray-800 mb-4">
             <Wind className="mr-2 text-blue-500" size={20} />
             Air Quality Control
@@ -293,7 +333,7 @@ const BioEcoSyncPulse: React.FC = () => {
           </div>
         </div>
         
-        <div className="bg-white rounded-xl shadow-neumorph-sm p-5">
+        <div className="bg-white border rounded-xl shadow-lg p-5 transition-colors duration-300">
           <h3 className="flex items-center text-lg font-medium text-gray-800 mb-4">
             <Cloud className="mr-2 text-indigo-500" size={20} />
             Sound Environment

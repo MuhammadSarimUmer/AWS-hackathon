@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useData } from '../context/DataContext';
 import { motion } from 'framer-motion';
 import { Globe, Users, Clock, Calendar, ArrowRight, Check, X } from 'lucide-react';
@@ -8,6 +8,8 @@ const GlobalHealingRituals: React.FC = () => {
   const [selectedCommIndex, setSelectedCommIndex] = useState(0);
   const [selectedRitualIndex, setSelectedRitualIndex] = useState(0);
   const [joinedRituals, setJoinedRituals] = useState<string[]>([]);
+  const [showConfetti, setShowConfetti] = useState(false);
+  const confettiTimeout = useRef<NodeJS.Timeout | null>(null);
   
   const selectedComm = communityData[selectedCommIndex];
   const selectedRitual = selectedComm?.groupRituals[selectedRitualIndex];
@@ -18,6 +20,13 @@ const GlobalHealingRituals: React.FC = () => {
     } else {
       setJoinedRituals([...joinedRituals, ritualName]);
     }
+  };
+  
+  const handleJoinRitual = (ritualName: string) => {
+    toggleJoinRitual(ritualName);
+    setShowConfetti(true);
+    if (confettiTimeout.current) clearTimeout(confettiTimeout.current);
+    confettiTimeout.current = setTimeout(() => setShowConfetti(false), 1200);
   };
   
   // Generate ritual recommendations based on patient data
@@ -126,7 +135,7 @@ const GlobalHealingRituals: React.FC = () => {
       {/* Community Info */}
       <motion.div 
         className="bg-white rounded-xl shadow-neumorph p-6"
-        initial={{ opacity: 0, scale: 0.95 }}
+        initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
@@ -171,23 +180,32 @@ const GlobalHealingRituals: React.FC = () => {
           <div className="border-b border-gray-200">
             <nav className="flex">
               {selectedComm.groupRituals.map((ritual, index) => (
-                <button
+                <motion.button
                   key={index}
                   onClick={() => setSelectedRitualIndex(index)}
-                  className={`py-4 px-6 text-center text-sm font-medium ${
+                  className={`py-4 px-6 text-center text-sm font-medium focus:outline-none ${
                     selectedRitualIndex === index
-                      ? 'border-b-2 border-accent-500 text-accent-600'
+                      ? 'border-b-2 border-accent-500 text-accent-600 bg-accent-50 scale-105'
                       : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                   }`}
+                  whileTap={{ scale: 0.95 }}
+                  animate={selectedRitualIndex === index ? { scale: 1.08 } : { scale: 1 }}
+                  transition={{ type: 'spring', stiffness: 300 }}
                 >
                   {ritual.name}
-                </button>
+                </motion.button>
               ))}
             </nav>
           </div>
           
           {selectedRitual && (
-            <div className="p-6">
+            <motion.div
+              className="p-6"
+              initial={{ rotateY: 90, opacity: 0 }}
+              animate={{ rotateY: 0, opacity: 1 }}
+              transition={{ duration: 0.6, type: 'spring' }}
+              style={{ perspective: 1000 }}
+            >
               <div className="flex flex-col md:flex-row justify-between">
                 <div>
                   <h3 className="text-lg font-medium text-gray-800">{selectedRitual.name}</h3>
@@ -210,13 +228,15 @@ const GlobalHealingRituals: React.FC = () => {
                 </div>
                 
                 <div className="mt-4 md:mt-0">
-                  <button 
+                  <motion.button
                     className={`px-4 py-2 rounded-lg font-medium ${
                       joinedRituals.includes(selectedRitual.name)
                         ? 'bg-success-100 text-success-700 flex items-center'
                         : 'bg-accent-500 text-white hover:bg-accent-600'
                     }`}
-                    onClick={() => toggleJoinRitual(selectedRitual.name)}
+                    onClick={() => handleJoinRitual(selectedRitual.name)}
+                    whileTap={{ scale: 0.95 }}
+                    whileHover={{ scale: 1.08, boxShadow: '0 0 0 8px #bae6fd44' }}
                   >
                     {joinedRituals.includes(selectedRitual.name) ? (
                       <>
@@ -224,12 +244,33 @@ const GlobalHealingRituals: React.FC = () => {
                         Joined
                       </>
                     ) : 'Join Ritual'}
-                  </button>
-                  
-                  {joinedRituals.includes(selectedRitual.name) && (
-                    <p className="mt-2 text-sm text-gray-600">
-                      Next session: Today at {selectedRitual.schedule.split(' at ')[1]}
-                    </p>
+                  </motion.button>
+                  {/* Confetti burst animation */}
+                  {showConfetti && (
+                    <motion.svg
+                      className="absolute left-1/2 top-0 -translate-x-1/2 z-50 pointer-events-none"
+                      width="120" height="60"
+                      initial={{ opacity: 0, scale: 0.7 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.7 }}
+                    >
+                      {[...Array(12)].map((_, i) => (
+                        <motion.circle
+                          key={i}
+                          cx={60 + 40 * Math.cos((i * Math.PI * 2) / 12)}
+                          cy={30 + 20 * Math.sin((i * Math.PI * 2) / 12)}
+                          r="5"
+                          fill={i % 2 === 0 ? '#8A6BC1' : '#3A9678'}
+                          animate={{
+                            cx: [60, 60 + 60 * Math.cos((i * Math.PI * 2) / 12)],
+                            cy: [30, 30 + 40 * Math.sin((i * Math.PI * 2) / 12)],
+                            opacity: [1, 0]
+                          }}
+                          transition={{ duration: 1, delay: 0.1 * i }}
+                        />
+                      ))}
+                    </motion.svg>
                   )}
                 </div>
               </div>
@@ -244,7 +285,7 @@ const GlobalHealingRituals: React.FC = () => {
                     ' overall wellbeing'}.
                 </p>
               </div>
-            </div>
+            </motion.div>
           )}
         </div>
       </motion.div>
@@ -257,12 +298,26 @@ const GlobalHealingRituals: React.FC = () => {
       >
         <h2 className="text-xl font-semibold text-gray-800 mb-4">Personalized Ritual Recommendations</h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div
+          className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0, y: 40 },
+            visible: {
+              opacity: 1, y: 0,
+              transition: { staggerChildren: 0.18 }
+            }
+          }}
+        >
           {recommendedRituals.map((ritual, index) => (
-            <motion.div 
+            <motion.div
               key={index}
               className="bg-white rounded-xl shadow-neumorph-sm p-5 border-l-4 border-primary-500"
-              whileHover={{ y: -5, transition: { duration: 0.2 } }}
+              whileHover={{ y: -5, scale: 1.04, boxShadow: '0 8px 32px #8A6BC122' }}
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
             >
               <div className="flex justify-between">
                 <h3 className="font-medium text-gray-800">{ritual.name}</h3>
@@ -280,7 +335,7 @@ const GlobalHealingRituals: React.FC = () => {
               
               <button 
                 className="mt-4 flex items-center text-primary-600 font-medium text-sm"
-                onClick={() => toggleJoinRitual(ritual.name)}
+                onClick={() => handleJoinRitual(ritual.name)}
               >
                 {joinedRituals.includes(ritual.name) ? (
                   <>
@@ -305,7 +360,14 @@ const GlobalHealingRituals: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.5 }}
       >
-        <h2 className="text-xl font-semibold text-gray-800 mb-4">Global Healing Network</h2>
+        <motion.h2
+          className="text-xl font-semibold text-gray-800 mb-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+        >
+          Global Healing Network
+        </motion.h2>
         
         <div className="bg-white rounded-xl shadow-neumorph p-6 overflow-hidden">
           <div className="relative aspect-video bg-gray-100 rounded-lg flex items-center justify-center">
@@ -350,6 +412,16 @@ const GlobalHealingRituals: React.FC = () => {
           </div>
         </div>
       </motion.div>
+
+      {/* When a ritual is joined, show a confetti/particle burst animation using framer-motion or a simple SVG/Canvas effect. */}
+      <motion.section
+        initial={{ opacity: 0, y: 40 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ duration: 0.6 }}
+      >
+        {/* Section content */}
+      </motion.section>
     </div>
   );
 };

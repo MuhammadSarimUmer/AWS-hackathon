@@ -173,7 +173,7 @@ const RecoveryResonanceMap: React.FC = () => {
 
       {/* Patient Info */}
       <motion.div 
-        className="bg-white rounded-xl shadow-neumorph-sm p-6"
+        className="bg-white border rounded-xl shadow-lg p-6 transition-colors duration-300"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
@@ -220,7 +220,7 @@ const RecoveryResonanceMap: React.FC = () => {
 
       {/* Resonance Visualization */}
       <motion.div 
-        className="bg-white rounded-xl shadow-neumorph p-6"
+        className="bg-white border rounded-xl shadow-lg p-6 transition-colors duration-300"
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.5, delay: 0.3 }}
@@ -330,7 +330,7 @@ const RecoveryResonanceMap: React.FC = () => {
       >
         <h2 className="text-xl font-semibold text-gray-800 mb-4">Weekly Pattern Analysis</h2>
         
-        <div className="bg-white rounded-xl shadow-neumorph-sm p-6">
+        <div className="bg-white border rounded-xl shadow-lg p-6 transition-colors duration-300">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead>

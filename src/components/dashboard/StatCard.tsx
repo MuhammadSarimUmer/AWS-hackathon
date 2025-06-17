@@ -23,7 +23,7 @@ const StatCard: React.FC<StatCardProps> = ({
 }) => {
   return (
     <motion.div 
-      className={`bg-white rounded-xl shadow-neumorph-sm p-5 ${className}`}
+      className={`bg-white border rounded-xl shadow-lg p-5 transition-colors duration-300 ${className}`}
       whileHover={{ y: -5, transition: { duration: 0.2 } }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -40,7 +40,7 @@ const StatCard: React.FC<StatCardProps> = ({
       </div>
       
       {(description || trend) && (
-        <div className="mt-4 pt-3 border-t border-gray-100">
+        <div className="mt-4 pt-3 border-t border-gray-100 transition-colors duration-300">
           {trend && (
             <div className={`flex items-center text-sm ${trend.isPositive ? 'text-success-500' : 'text-error-500'}`}>
               <span className="font-medium">

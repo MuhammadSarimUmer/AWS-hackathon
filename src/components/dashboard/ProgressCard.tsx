@@ -60,7 +60,7 @@ const ProgressCard: React.FC<ProgressCardProps> = ({
 
   return (
     <motion.div 
-      className={`bg-white rounded-xl shadow-neumorph-sm p-5 ${className}`}
+      className={`bg-white border rounded-xl shadow-lg p-5 transition-colors duration-300 ${className}`}
       whileHover={{ y: -5, transition: { duration: 0.2 } }}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -77,7 +77,7 @@ const ProgressCard: React.FC<ProgressCardProps> = ({
       
       <div className="flex items-center">
         <div className="relative w-full mr-4">
-          <div className={`h-2 rounded-full ${selectedColor.ring}`}>
+          <div className={`h-2 rounded-full ${selectedColor.ring} transition-colors duration-300`}>
             <motion.div 
               className={`h-2 rounded-full ${selectedColor.bg}`}
               initial={{ width: 0 }}

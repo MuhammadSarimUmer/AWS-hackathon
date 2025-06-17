@@ -3,7 +3,6 @@ import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Navbar from './Navbar';
 import FloatingActionButton from '../dashboard/FloatingActionButton';
-import AuroraFloatingButton from '../dashboard/AuroraFloatingButton';
 import WindSculptureFloatingButton from '../dashboard/WindSculptureFloatingButton';
 import HealingEmberFloatingButton from '../dashboard/HealingEmberFloatingButton';
 import PetalVortexFloatingButton from '../dashboard/PetalVortexFloatingButton';
@@ -18,7 +17,7 @@ const Layout: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="min-h-screen flex bg-gray-50 transition-colors duration-300">
       {/* Sidebar - hidden on mobile, visible on desktop */}
       <div className={`fixed inset-0 z-20 transition-opacity ${sidebarOpen ? 'block' : 'hidden'} lg:hidden`}>
         <div 
@@ -27,14 +26,14 @@ const Layout: React.FC = () => {
         ></div>
       </div>
 
-      <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} />
+      <Sidebar isOpen={sidebarOpen} toggleSidebar={toggleSidebar} className="bg-white border-r border-gray-200 transition-colors duration-300" />
 
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <Navbar toggleSidebar={toggleSidebar} />
 
         <motion.main 
-          className="flex-1 overflow-x-hidden overflow-y-auto bg-gradient-to-br from-gray-50 to-blue-50 p-4 md:p-6"
+          className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-4 md:p-6 transition-colors duration-300"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -45,7 +44,6 @@ const Layout: React.FC = () => {
 
       {/* Floating Action Buttons */}
       <FloatingActionButton />
-      <AuroraFloatingButton />
       <WindSculptureFloatingButton />
       <HealingEmberFloatingButton />
       <PetalVortexFloatingButton />

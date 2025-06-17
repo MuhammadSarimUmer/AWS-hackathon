@@ -91,7 +91,7 @@ const ResilienceRippleJet: React.FC = () => {
           </div>
           {/* Neumorphic/Glassmorphic Stat Card */}
           <motion.div
-            className="flex-1 bg-white/70 rounded-2xl shadow-neumorph-sm border-l-4 border-blue-400 p-6 flex flex-col items-center justify-center"
+            className="flex-1 bg-white/70 border rounded-2xl shadow-neumorph-sm border-l-4 border-blue-400 p-6 flex flex-col items-center justify-center transition-colors duration-300"
             whileHover={{ y: -5, scale: 1.03 }}
             transition={{ duration: 0.3 }}
           >

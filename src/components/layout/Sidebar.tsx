@@ -6,9 +6,10 @@ import { motion } from 'framer-motion';
 interface SidebarProps {
   isOpen: boolean;
   toggleSidebar: () => void;
+  className?: string;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
+const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, className = '' }) => {
   const [collapsed, setCollapsed] = useState(false);
 
   const navItems = [
@@ -38,7 +39,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
       <motion.div 
         className={`fixed inset-y-0 left-0 z-30 w-64 bg-white shadow-lg transform ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
-        } transition-transform duration-300 ease-in-out lg:hidden`}
+        } transition-transform duration-300 ease-in-out lg:hidden border-r border-gray-200 transition-colors duration-300 ${className}`}
         initial={false}
         animate={isOpen ? { x: 0 } : { x: '-100%' }}
       >
@@ -83,7 +84,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar }) => {
 
       {/* Desktop Sidebar - Collapsible */}
       <motion.div 
-        className={`hidden lg:flex flex-col h-screen border-r border-gray-200 bg-white overflow-y-auto transition-all duration-300 ${collapsed ? 'w-20' : 'w-64'}`}
+        className={`hidden lg:flex flex-col h-screen border-r border-gray-200 bg-white overflow-y-auto transition-all duration-300 transition-colors ${collapsed ? 'w-20' : 'w-64'} ${className}`}
         initial={{ x: -20, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
         transition={{ duration: 0.3 }}

@@ -115,10 +115,10 @@ const HealingWave: React.FC = () => {
 
       {/* Patient Info */}
       <motion.div 
-        className="bg-white rounded-xl shadow-neumorph-sm p-6"
-        initial={{ opacity: 0, y: 20 }}
+        className="bg-white border rounded-xl shadow-lg p-6 transition-colors duration-300"
+        initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, delay: 0.2 }}
+        transition={{ duration: 0.6 }}
       >
         <div className="flex flex-col md:flex-row justify-between">
           <div>
@@ -133,7 +133,18 @@ const HealingWave: React.FC = () => {
       </motion.div>
 
       {/* Stats Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <motion.div
+        className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
+        initial="hidden"
+        animate="visible"
+        variants={{
+          hidden: { opacity: 0, y: 40 },
+          visible: {
+            opacity: 1, y: 0,
+            transition: { staggerChildren: 0.15 }
+          }
+        }}
+      >
         <StatCard 
           title="Recovery Progress" 
           value={`${selectedPatient.recoveryMetrics.recoveryProgress}%`}
@@ -158,7 +169,7 @@ const HealingWave: React.FC = () => {
           icon={<Users size={24} />}
           description="Active support relationships"
         />
-      </div>
+      </motion.div>
 
       {/* Wave Visualization */}
       <motion.div 
@@ -186,25 +197,25 @@ const HealingWave: React.FC = () => {
         </div>
         
         <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white p-3 rounded-lg shadow-sm">
+          <div className="bg-white border rounded-lg shadow-sm p-3">
             <h4 className="text-sm font-medium text-gray-700">Wave Amplitude</h4>
             <p className="text-lg font-semibold">{waveProperties.amplitude.toFixed(2)}</p>
             <p className="text-xs text-gray-500">Based on recovery progress</p>
           </div>
           
-          <div className="bg-white p-3 rounded-lg shadow-sm">
+          <div className="bg-white border rounded-lg shadow-sm p-3">
             <h4 className="text-sm font-medium text-gray-700">Wave Frequency</h4>
             <p className="text-lg font-semibold">{waveProperties.frequency.toFixed(2)}</p>
             <p className="text-xs text-gray-500">Based on mental wellness</p>
           </div>
           
-          <div className="bg-white p-3 rounded-lg shadow-sm">
+          <div className="bg-white border rounded-lg shadow-sm p-3">
             <h4 className="text-sm font-medium text-gray-700">Wave Speed</h4>
             <p className="text-lg font-semibold">{waveProperties.speed.toFixed(2)}</p>
             <p className="text-xs text-gray-500">Based on mobility score</p>
           </div>
           
-          <div className="bg-white p-3 rounded-lg shadow-sm">
+          <div className="bg-white border rounded-lg shadow-sm p-3">
             <h4 className="text-sm font-medium text-gray-700">Wave Density</h4>
             <p className="text-lg font-semibold">{waveProperties.density.toFixed(2)}</p>
             <p className="text-xs text-gray-500">Based on community connections</p>
@@ -219,7 +230,7 @@ const HealingWave: React.FC = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.6 }}
       >
-        <div className="bg-white rounded-xl shadow-neumorph-sm p-5">
+        <div className="bg-white border rounded-xl shadow-lg p-5">
           <h3 className="flex items-center text-lg font-medium text-gray-800 mb-4">
             <Users className="mr-2 text-accent-500" size={20} />
             Community Impact
@@ -249,7 +260,7 @@ const HealingWave: React.FC = () => {
           </div>
         </div>
         
-        <div className="bg-white rounded-xl shadow-neumorph-sm p-5">
+        <div className="bg-white border rounded-xl shadow-lg p-5">
           <h3 className="flex items-center text-lg font-medium text-gray-800 mb-4">
             <Leaf className="mr-2 text-secondary-500" size={20} />
             Environmental Impact
@@ -279,6 +290,14 @@ const HealingWave: React.FC = () => {
           </div>
         </div>
       </motion.div>
+
+      <motion.button
+        whileHover={{ scale: 1.08, boxShadow: '0 0 0 8px #bae6fd44' }}
+        whileTap={{ scale: 0.95 }}
+        className="..."
+      >
+        {/* Button content */}
+      </motion.button>
     </div>
   );
 };
