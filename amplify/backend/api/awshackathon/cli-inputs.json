@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "serviceConfiguration": {
+    "apiName": "awshackathon",
+    "serviceName": "AppSync",
+    "defaultAuthType": {
+      "mode": "AMAZON_COGNITO_USER_POOLS",
+      "cognitoUserPoolId": "authawshackathond6789e16"
+    },
+    "conflictResolution": {},
+    "additionalAuthTypes": [
+      {
+        "mode": "API_KEY",
+        "expirationTime": 300,
+        "apiKeyExpirationDate": "2026-04-16T16:11:32.426Z",
+        "keyDescription": "demo key"
+      }
+    ]
+  }
+}

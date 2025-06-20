@@ -1,0 +1,12 @@
+{
+  "AppSyncApiName": "awshackathon",
+  "DynamoDBBillingMode": "PAY_PER_REQUEST",
+  "DynamoDBEnableServerSideEncryption": false,
+  "AuthCognitoUserPoolId": {
+    "Fn::GetAtt": [
+      "authawshackathond6789e16",
+      "Outputs.UserPoolId"
+    ]
+  },
+  "AuthModeLastUpdated": "2025-06-20T16:06:28.206Z"
+}

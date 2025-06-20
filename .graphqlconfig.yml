@@ -1,0 +1,15 @@
+projects:
+  awshackathon:
+    schemaPath: src/graphql/schema.json
+    includes:
+      - Community_Metric
+    excludes:
+      - ./amplify/**
+    extensions:
+      amplify:
+        codeGenTarget: javascript
+        generatedFileName: ''
+        docsFilePath: .
+extensions:
+  amplify:
+    version: 3
